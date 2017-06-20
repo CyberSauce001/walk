@@ -154,13 +154,16 @@ public:
 
 class Level {
 public:
-	unsigned char arr[16][80];
+	unsigned char arr[116][180];
 	int nrows, ncols;
 	int tilesize[2];
 	Flt ftsz[2];
 	Flt tile_base;
+	int dynamicHeight[180];
 	Level() {
 		//Log("Level constructor\n");
+		for (int i=0; i<180; i++) 
+		    dynamicHeight[i] = -1;
 		tilesize[0] = 32;
 		tilesize[1] = 32;
 		ftsz[0] = (Flt)tilesize[0];
@@ -430,6 +433,7 @@ void checkMouse(XEvent *e)
 	if (e->type == ButtonPress) {
 		if (e->xbutton.button==1) {
 			//Left button is down
+
 		}
 		if (e->xbutton.button==3) {
 			//Right button is down
@@ -484,6 +488,7 @@ void checkKeys(XEvent *e)
 	static int shift=0;
 	int key = XLookupKeysym(&e->xkey, 0);
 	gl.keys[key]=1;
+       
 	if (e->type == KeyRelease) {
 		gl.keys[key]=0;
 		if (key == XK_Shift_L || key == XK_Shift_R)
@@ -644,19 +649,31 @@ void physics(void)
 	Flt dd = lev.ftsz[0];
 	int col = (int)(gl.camera[0] / dd) +(500.0 / lev.tilesize[0]+1.0);
 	col = col % lev.ncols;
-	int hgt = 0;
-	for (int i=0; i<lev.nrows; i++) {
-		if (lev.arr[i][col] != ' ') {
-		    hgt = i;
-		    break;
+	int hgt;
+	if (lev.dynamicHeight[col] != -1) {
+	    //set hgt to array value
+	    hgt = lev.dynamicHeight[col];
+	   
+	} else {
+		for (int i=0; i<lev.nrows; i++) {
+			if(lev.arr[i][col] != ' ') {
+		    	hgt = i;
+		    	break;
+			}
 		}
-	}
+		//Debug purposes
+		//printf("col saved: %i\n",col);
+
+		//save height value in array
+		lev.dynamicHeight[col] = hgt;
+		
+	}	
 	//height of ball is (nrows-1-i)*tiles_height + starting point,
 	Flt h = lev.tilesize[1]*(lev.nrows-hgt) + lev.tile_base;
 	if (gl.ball_pos[1] <= h) {
 	    gl.ball_vel[1] = 0.0;
 	    gl.ball_pos[1] = h;
-}
+	}
 }
 
 void render(void)
