@@ -488,7 +488,7 @@ void checkKeys(XEvent *e)
 	static int shift=0;
 	int key = XLookupKeysym(&e->xkey, 0);
 	gl.keys[key]=1;
-       
+        key = key & 0x0000ffff;
 	if (e->type == KeyRelease) {
 		gl.keys[key]=0;
 		if (key == XK_Shift_L || key == XK_Shift_R)
