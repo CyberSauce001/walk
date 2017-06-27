@@ -53,10 +53,9 @@ void checkKeys(XEvent *e);
 void init();
 void physics(void);
 void render(void);
-char *message(char *str)
-{
-    return str;
-}
+char message[250];
+extern int lab3msgfunction();
+
 //-----------------------------------------------------------------------------
 //Setup timers
 class Timers {
@@ -927,7 +926,8 @@ void render(void)
 	ggprint8b(&r, 16, 0, "W Walk cycle");
 	ggprint8b(&r, 16, 0, "P Play");
 	ggprint8b(&r,16, 0, "message from server");
-	ggprint8b(&r,16,0,(const char*) message);
+	lab3msgfunction();
+	ggprint8b(&r,16,0,"%s", message);
 	
     }
 }
