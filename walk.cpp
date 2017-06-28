@@ -57,7 +57,7 @@ char *message;
 //can't no longer use global
 //extern int lab3msgfunction();
 char * lab3msgfunction(char *host, char *page);
-
+static bool paused = false;
 
 //-----------------------------------------------------------------------------
 //Setup timers
@@ -522,6 +522,8 @@ void checkKeys(XEvent *e)
 	    //gl.state = STATE_PAUSE;
 	    gl.state = 
 		(gl.state == STATE_PAUSE) ? STATE_GAMEPLAY : STATE_PAUSE;
+	    if(STATE_PAUSE)
+		paused = true;
 	    break;
 	case XK_s:
 	    screenCapture();
@@ -932,14 +934,18 @@ void render(void)
 	r.left = gl.xres/2 - 100;
 	ggprint8b(&r, 16, 0, "W Walk cycle");
 	ggprint8b(&r, 16, 0, "P Play");
+	ggprint8b(&r, 16, 0, "Press [P] during Play to Pause the game");
 	ggprint8b(&r,16, 0, "message from server");
 	//lab3msgfunction();
 	char host [] = "sleipnir.cs.csubak.edu";
 	char page [] = "/~anguyen/3350/test";
 	message = lab3msgfunction(host,page); 
 	ggprint8b(&r,16,0,"%s", message);
-	
     }
+	if (paused)
+	    ggprint8b(&r,16,0, "GAME PAUSED");
+
+    
 
 }
 
