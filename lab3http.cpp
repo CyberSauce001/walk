@@ -24,19 +24,20 @@ int create_tcp_socket();
 char *get_ip(char *host);
 char *build_get_query(char *host, const char *page);
 void program_usage();
-extern char message[250];
+//extern char message[250];
 #define HOST "sleipnir.cs.csub.edu"
 #define PAGE "/"
 #define PORT 80
 #define USERAGENT "HTMLGET 1.0"
-extern char message[250];
-char lab3msgfunction(char* host, char*page)
+//extern char message[250];
+char* lab3msgfunction(char* host, char*page)
 {
     struct sockaddr_in *remote;
     int sock;
     int tmpres;
     char *ip;
     char *get;
+    char *msg = new char[250];
     char buf[BUFSIZ + 1];
     //page = "/~anguyen/3350/test";
     //host = "sleipnir.cs.csubak.edu";
@@ -85,7 +86,7 @@ char lab3msgfunction(char* host, char*page)
         }
         if (htmlstart) {
             fprintf(stdout, "%s", htmlcontent);
-                    strcpy (message, htmlcontent);
+                    strcpy (msg, htmlcontent);
             }
         
 
@@ -98,7 +99,7 @@ char lab3msgfunction(char* host, char*page)
     free(remote);
     free(ip);
     close(sock);
-    return 0;
+    return msg;
 }
 
 void program_usage()

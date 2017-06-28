@@ -57,6 +57,8 @@ char *message;
 //can't no longer use global
 //extern int lab3msgfunction();
 char * lab3msgfunction(char *host, char *page);
+
+
 //-----------------------------------------------------------------------------
 //Setup timers
 class Timers {
@@ -103,7 +105,8 @@ enum State {
     STATE_NONE,
     STATE_STARTUP,
     STATE_GAMEPLAY,
-    STATE_GAMEOVER
+    STATE_GAMEOVER,
+    STATE_PAUSE
 
 };
 class Global {
@@ -131,6 +134,7 @@ class Global {
 	Global() {
 	    logOpen();
 	    state = STATE_STARTUP;
+	    state = STATE_PAUSE;
 	    camera[0] = camera[1] = 0.0;
 	    ball_pos[0]=500.0;
 	    ball_pos[1]=ball_pos[2]=0.0;
@@ -495,7 +499,6 @@ void checkKeys(XEvent *e)
     //keyboard input?
     static int shift=0;
     int key = XLookupKeysym(&e->xkey, 0);
-    gl.keys[key]=1;
     key = key & 0x0000ffff;
     if (e->type == KeyRelease) {
 	gl.keys[key]=0;
@@ -515,7 +518,10 @@ void checkKeys(XEvent *e)
     if (shift) {}
     switch (key) {
 	case XK_p:
-	    gl.state = STATE_GAMEPLAY;
+	    //gl.state = STATE_GAMEPLAY;
+	    //gl.state = STATE_PAUSE;
+	    gl.state = 
+		(gl.state == STATE_PAUSE) ? STATE_GAMEPLAY : STATE_PAUSE;
 	    break;
 	case XK_s:
 	    screenCapture();
@@ -558,7 +564,7 @@ void checkKeys(XEvent *e)
 	    gl.delay += 0.005;
 	    break;
 	case XK_Escape:
-	    gl.done=1;
+	    gl.done=STATE_GAMEOVER;
 	    break;
     }
 }
@@ -901,7 +907,7 @@ void render(void)
     }
     //
     //check for startup state
-    if (gl.state == STATE_STARTUP) {
+    if (gl.state == STATE_PAUSE || gl.state == STATE_STARTUP) {
 	h = 100.0;
 	w = 200.0;
 	glPushMatrix();
@@ -912,8 +918,8 @@ void render(void)
 	glBegin(GL_QUADS);
 	glVertex2i(-w, -h);
 	glVertex2i(-w,  h);
-	glVertex2i(w,   h);
-	glVertex2i(w,  -h);
+	glVertex2i( w,  h);
+	glVertex2i( w, -h);
 	glEnd();
 	glDisable(GL_BLEND);
 	glPopMatrix();
@@ -934,7 +940,9 @@ void render(void)
 	ggprint8b(&r,16,0,"%s", message);
 	
     }
+
 }
+
 
 
 
