@@ -58,7 +58,8 @@ char *message;
 //extern int lab3msgfunction();
 char * lab3msgfunction(char *host, char *page);
 static bool paused = false;
-
+static bool freeze = false;
+static bool unfreeze = false;
 //-----------------------------------------------------------------------------
 //Setup timers
 class Timers {
@@ -233,7 +234,13 @@ int main(void)
 	    checkKeys(&e);
 	}
 	physics();
-	render();
+	if(!freeze) {
+	    render();
+	    unfreeze = true;
+	}
+	if(unfreeze && paused)
+	    render();
+
 	glXSwapBuffers(dpy, win);
     }
     cleanupXWindows();
@@ -524,6 +531,7 @@ void checkKeys(XEvent *e)
 		(gl.state == STATE_PAUSE) ? STATE_GAMEPLAY : STATE_PAUSE;
 	    if(STATE_PAUSE)
 		paused = true;
+	    freeze = true;
 	    break;
 	case XK_s:
 	    screenCapture();
@@ -940,13 +948,15 @@ void render(void)
 	char host [] = "sleipnir.cs.csubak.edu";
 	char page [] = "/~anguyen/3350/test";
 	message = lab3msgfunction(host,page); 
+	if(
 	ggprint8b(&r,16,0,"%s", message);
-    }
-	if (paused)
+	delete message;
+
+	if (paused) { 
 	    ggprint8b(&r,16,0, "GAME PAUSED");
-
-    
-
+	    paused = false;
+	}
+    }
 }
 
 
