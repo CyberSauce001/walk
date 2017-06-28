@@ -53,9 +53,10 @@ void checkKeys(XEvent *e);
 void init();
 void physics(void);
 void render(void);
-char message[250];
-extern int lab3msgfunction();
-
+char *message;
+//can't no longer use global
+//extern int lab3msgfunction();
+char * lab3msgfunction(char *host, char *page);
 //-----------------------------------------------------------------------------
 //Setup timers
 class Timers {
@@ -926,7 +927,10 @@ void render(void)
 	ggprint8b(&r, 16, 0, "W Walk cycle");
 	ggprint8b(&r, 16, 0, "P Play");
 	ggprint8b(&r,16, 0, "message from server");
-	lab3msgfunction();
+	//lab3msgfunction();
+	char host [] = "sleipnir.cs.csubak.edu";
+	char page [] = "/~anguyen/3350/test";
+	message = lab3msgfunction(host,page); 
 	ggprint8b(&r,16,0,"%s", message);
 	
     }

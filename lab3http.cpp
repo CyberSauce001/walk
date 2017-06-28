@@ -30,7 +30,7 @@ extern char message[250];
 #define PORT 80
 #define USERAGENT "HTMLGET 1.0"
 extern char message[250];
-int lab3msgfunction()
+char lab3msgfunction(char* host, char*page)
 {
     struct sockaddr_in *remote;
     int sock;
@@ -38,8 +38,8 @@ int lab3msgfunction()
     char *ip;
     char *get;
     char buf[BUFSIZ + 1];
-    char page[] = "/~anguyen/3350/test";
-    char host[] = "sleipnir.cs.csubak.edu";
+    //page = "/~anguyen/3350/test";
+    //host = "sleipnir.cs.csubak.edu";
     sock = create_tcp_socket();
     ip = get_ip(host);
     fprintf(stderr, "IP is %s\n", ip);
