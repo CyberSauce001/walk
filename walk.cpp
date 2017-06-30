@@ -949,7 +949,7 @@ void render(void)
 	char page [] = "/~anguyen/3350/test";
 	
 	int timer = time(NULL);
-	if( timer <= 3 || timer >= 2 ) {
+	if( timer <= 3 || timer > 1 ) {
 		message = lab3msgfunction(host,page); 
 		ggprint8b(&r,16,0,"%s", message);
 		delete message;
