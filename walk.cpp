@@ -947,11 +947,14 @@ void render(void)
 	//lab3msgfunction();
 	char host [] = "sleipnir.cs.csubak.edu";
 	char page [] = "/~anguyen/3350/test";
-	message = lab3msgfunction(host,page); 
-	if(
-	ggprint8b(&r,16,0,"%s", message);
-	delete message;
-
+	
+	int timer = time(NULL);
+	if( timer =< 3 || timer >= 2 ) {
+		message = lab3msgfunction(host,page); 
+		ggprint8b(&r,16,0,"%s", message);
+		delete message;
+		timer = 0;
+	}
 	if (paused) { 
 	    ggprint8b(&r,16,0, "GAME PAUSED");
 	    paused = false;
