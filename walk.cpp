@@ -33,7 +33,7 @@ typedef Flt	Matrix[4][4];
 #define VecCopy(a,b) (b)[0]=(a)[0];(b)[1]=(a)[1];(b)[2]=(a)[2]
 #define VecDot(a,b)	((a)[0]*(b)[0]+(a)[1]*(b)[1]+(a)[2]*(b)[2])
 #define VecSub(a,b,c) (c)[0]=(a)[0]-(b)[0]; \
-		(c)[1]=(a)[1]-(b)[1]; \
+			     (c)[1]=(a)[1]-(b)[1]; \
 (c)[2]=(a)[2]-(b)[2]
 //constants
 const float timeslice = 1.0f;
@@ -947,13 +947,13 @@ void render(void)
 	//lab3msgfunction();
 	char host [] = "sleipnir.cs.csubak.edu";
 	char page [] = "/~anguyen/3350/test";
-	
+
 	int timer = time(NULL);
 	if ( timer <= 3 || timer > 1 ) {
-		message = lab3msgfunction(host,page); 
-		ggprint8b(&r,16,0,"%s", message);
-		delete message;
-		timer = 0;
+	    message = lab3msgfunction(host,page); 
+	    ggprint8b(&r,16,0,"%s", message);
+	    delete message;
+	    timer = 0;
 	}
 	if (paused) { 
 	    ggprint8b(&r,16,0, "GAME PAUSED");
