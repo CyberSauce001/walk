@@ -33,7 +33,7 @@ typedef Flt	Matrix[4][4];
 #define VecCopy(a,b) (b)[0]=(a)[0];(b)[1]=(a)[1];(b)[2]=(a)[2]
 #define VecDot(a,b)	((a)[0]*(b)[0]+(a)[1]*(b)[1]+(a)[2]*(b)[2])
 #define VecSub(a,b,c) (c)[0]=(a)[0]-(b)[0]; \
-			     (c)[1]=(a)[1]-(b)[1]; \
+		(c)[1]=(a)[1]-(b)[1]; \
 (c)[2]=(a)[2]-(b)[2]
 //constants
 const float timeslice = 1.0f;
@@ -234,11 +234,11 @@ int main(void)
 	    checkKeys(&e);
 	}
 	physics();
-	if(!freeze) {
+	if (!freeze) {
 	    render();
 	    unfreeze = true;
 	}
-	if(unfreeze && paused)
+	if (unfreeze && paused)
 	    render();
 
 	glXSwapBuffers(dpy, win);
@@ -529,7 +529,7 @@ void checkKeys(XEvent *e)
 	    //gl.state = STATE_PAUSE;
 	    gl.state = 
 		(gl.state == STATE_PAUSE) ? STATE_GAMEPLAY : STATE_PAUSE;
-	    if(STATE_PAUSE)
+	    if (STATE_PAUSE)
 		paused = true;
 	    freeze = true;
 	    break;
@@ -683,7 +683,7 @@ void physics(void)
 
     } else {
 	for (int i=0; i<lev.nrows; i++) {
-	    if(lev.arr[i][col] != ' ') {
+	    if (lev.arr[i][col] != ' ') {
 		hgt = i;
 		break;
 	    }
@@ -949,7 +949,7 @@ void render(void)
 	char page [] = "/~anguyen/3350/test";
 	
 	int timer = time(NULL);
-	if( timer <= 3 || timer > 1 ) {
+	if ( timer <= 3 || timer > 1 ) {
 		message = lab3msgfunction(host,page); 
 		ggprint8b(&r,16,0,"%s", message);
 		delete message;
