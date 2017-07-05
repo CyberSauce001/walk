@@ -524,6 +524,12 @@ void checkKeys(XEvent *e)
     }
     if (shift) {}
     switch (key) {
+	#ifdef UNIT_TEST
+	case XK_a:
+		void unitTest_normalize();
+		unitTest_normalize();
+		break;
+	#endif //UNIT_TEST
 	case XK_p:
 	    //gl.state = STATE_GAMEPLAY;
 	    //gl.state = STATE_PAUSE;
@@ -598,6 +604,35 @@ Flt VecNormalize(Vec vec)
     return(len);
 }
 
+#ifdef UNIT_TEST
+
+Vec varr[100] = {
+0.62, 3280.8, 3.28,
+0.39, 0.039, 0.0254,
+2.54, 25.40, 0.30,
+0.91, 0.00091, 1.61,
+1.057, 0.264, 0.0042,
+0.0338, 29.57, 236.6,
+0.95, 3.785, 0.0011,
+2.2046, 0.035, 0.002205,
+0.000035, 28.35, 0.454 };
+void unitTest_normalize()
+{
+	Vec vec = { 10.0, 0.0, 0.0};
+	for (int i=0; i <9; i++) {
+		Flt ret = VecNormalize(varr[i]);
+		Flt tolerance = 0.05;
+		ret =  ret - 14.14;
+		ret = fabs(ret);
+		if (ret <= tolerance) {
+	    		printf("unit test passed\n");
+		} else {
+	    		printf("unit test failed. ret:%lf vec[0]: %lf\n", ret, vec[0]);
+		}
+
+	}
+}
+#endif //UNIT_TEST
 void physics(void)
 {
     if (gl.walk || gl.keys[XK_Right] || gl.keys[XK_Left]) {
