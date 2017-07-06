@@ -606,7 +606,7 @@ Flt VecNormalize(Vec vec)
 
 #ifdef UNIT_TEST
 
-Vec varr[100] = {
+Vec varr[] = {
 0.62, 3280.8, 3.28,
 0.39, 0.039, 0.0254,
 2.54, 25.40, 0.30,
@@ -616,20 +616,33 @@ Vec varr[100] = {
 0.95, 3.785, 0.0011,
 2.2046, 0.035, 0.002205,
 0.000035, 28.35, 0.454 };
+
+Flt retvarr[] = { 
+3280.80, 
+0.392, 
+25.52,
+1.849, 
+1.089, 
+238.44,
+3.902, 
+2.204, 
+28.35 };
+
 void unitTest_normalize()
 {
-	Vec vec = { 10.0, 0.0, 0.0};
-	for (int i=0; i <9; i++) {
+	for (int i=0; i < 9; i++) {
 		Flt ret = VecNormalize(varr[i]);
-		Flt tolerance = 0.05;
-		ret =  ret - 14.14;
+		Flt tolerance = 0.01;
+		ret = ret - retvarr[i];
 		ret = fabs(ret);
 		if (ret <= tolerance) {
-	    		printf("unit test passed\n");
+			printf("unit test success.\n");
+		//debug test to see where the ret and tolerance failed
+		//printf("unit test failed. ret: %f retvarr[0]:%lf.\n", ret, retvarr[i]);
 		} else {
-	    		printf("unit test failed. ret:%lf vec[0]: %lf\n", ret, vec[0]);
+			printf("unit test failed.ret: %lf",ret);
+			printf(" retvarr[0]:%lf.\n", retvarr[i]);
 		}
-
 	}
 }
 #endif //UNIT_TEST
@@ -983,12 +996,13 @@ void render(void)
 	char host [] = "sleipnir.cs.csubak.edu";
 	char page [] = "/~anguyen/3350/test";
 
-	int timer = time(NULL);
-	if ( timer <= 3 || timer > 1 ) {
+	double timer = time(NULL);
+	static double newtime = 0;
+	if ( timer > newtime + 2 || timer > newtime + 3 ) {
 	    message = lab3msgfunction(host,page); 
 	    ggprint8b(&r,16,0,"%s", message);
+	    newtime = timer;
 	    delete message;
-	    timer = 0;
 	}
 	if (paused) { 
 	    ggprint8b(&r,16,0, "GAME PAUSED");
