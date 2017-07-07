@@ -590,10 +590,8 @@ void checkKeys(XEvent *e)
 	    break;
     }
     	#ifdef ALEX_UNIT_TEST
-	if (key != XK_s || key != !XK_m) {
 		void unittest_keypress(int key);
 		unittest_keypress(key);
-	}
     	#endif //ALEX_UNIT_TEST
 	
 }
@@ -644,7 +642,11 @@ Flt retvarr[] = {
 void unitTest_normalize()
 {
 	for (int i=0; i < 9; i++) {
-		Flt ret = VecNormalize(varr[i]);
+		Vec tmp;
+		tmp[0] = varr[i][0];
+		tmp[1] = varr[i][1];
+		tmp[2] = varr[i][2];
+		Flt ret = VecNormalize(tmp);
 		Flt tolerance = 0.05;
 		ret = ret - retvarr[i];
 		ret = fabs(ret);
@@ -654,7 +656,8 @@ void unitTest_normalize()
 		//printf("unit test failed. ret: %f retvarr[0]:%lf.\n", ret, retvarr[i]);
 		} else {
 			printf("unit test failed.ret: %lf",ret);
-			printf(" retvarr[0]:%lf.\n", retvarr[i]);
+			printf(" varr[%d]:%lf %lf %lf.\n", i, varr[i][0],
+				varr[i][1], varr[i][2]);
 		}
 	}
 }
