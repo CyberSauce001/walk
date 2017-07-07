@@ -524,6 +524,12 @@ void checkKeys(XEvent *e)
     }
     if (shift) {}
     switch (key) {
+    	/*#ifdef ALEX_UNIT_TEST
+	case XK_n:
+		void unittest_keypress();	
+    		unittest_keypress();
+		break;
+    	#endif //ALEX_UNIT_TEST*/
 	#ifdef UNIT_TEST
 	case XK_a:
 		void unitTest_normalize();
@@ -583,6 +589,13 @@ void checkKeys(XEvent *e)
 	    gl.done=STATE_GAMEOVER;
 	    break;
     }
+    	#ifdef ALEX_UNIT_TEST
+	if (key != XK_s || key != !XK_m) {
+		void unittest_keypress(int key);
+		unittest_keypress(key);
+	}
+    	#endif //ALEX_UNIT_TEST
+	
 }
 
 Flt VecNormalize(Vec vec)
@@ -632,7 +645,7 @@ void unitTest_normalize()
 {
 	for (int i=0; i < 9; i++) {
 		Flt ret = VecNormalize(varr[i]);
-		Flt tolerance = 0.01;
+		Flt tolerance = 0.05;
 		ret = ret - retvarr[i];
 		ret = fabs(ret);
 		if (ret <= tolerance) {
@@ -1012,9 +1025,17 @@ void render(void)
 }
 
 
-
-
-
+//check to see if any keys are pressed
+#ifdef ALEX_UNIT_TEST
+void unittest_keypress(int key)
+{
+	if (key) {
+		printf("Unit test passed. Keys pressed: %c.\n", key);
+	} else {
+		printf("Unit test failed.\n");
+	}
+}
+#endif //ALEX_UNIT_TEST
 
 
 
